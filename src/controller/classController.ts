@@ -1,22 +1,23 @@
 import { Request, Response } from "express";
+import { ObjectID as ID } from 'mongodb';
 import { getCustomRepository } from "typeorm";
+import { Class } from "../models/Classes";
 import { ClassesRepositories } from "../repositories/ClassesRepositories";
 
 class ClassController{
     async create(request: Request, response: Response){
         const { name } = request.body;
         const classRepository = getCustomRepository(ClassesRepositories);
-        const Class = classRepository.create({
-            name
-        })
-        await classRepository.save(Class);
-        return response.status(201).json(Class);
+        const _class = new Class();
+        _class.name = name;
+        await classRepository.save(_class);
+        return response.status(201).json(_class);
     }
 
     async update(request: Request, response: Response){
         const { id, name} = request.body;
         const classRepository = getCustomRepository(ClassesRepositories);
-        await classRepository.update({id},{name});
+        await classRepository.update({_id: new ID(id)},{name});
         return response.json({
             message:"Modificado com sucesso!"
         });
@@ -25,7 +26,7 @@ class ClassController{
     async delete(request: Request, response: Response){
         const { id } = request.query;
         const classRepository = getCustomRepository(ClassesRepositories);
-        await classRepository.delete({id:String(id)});
+        await classRepository.delete({_id: new ID(String(id))});
         return response.json({message:"Removido com sucesso!"});
     }
 

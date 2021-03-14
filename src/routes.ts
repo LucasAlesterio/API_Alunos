@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { ClassController } from './controller/ClassController';
+import { ClassController } from './controller/classController';
 import { StudentController } from './controller/studentController';
 
 const studentController = new StudentController();
@@ -15,6 +15,5 @@ router.post('/class', classController.create);
 router.put('/class', classController.update);
 router.delete('/class', classController.delete);
 router.get('/class', classController.list);
-
 
 export { router };

@@ -1,19 +1,14 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
-import { v4 as uuid } from 'uuid';
+import { Column, Entity, ObjectID, ObjectIdColumn } from 'typeorm';
 
-@Entity("classes")
+@Entity()
 class Class{
-    @PrimaryColumn()
-    readonly id: string;
+
+    @ObjectIdColumn()
+    _id: ObjectID;
 
     @Column()
     name: string;
-
-    constructor(){
-        if(!this.id){
-            this.id = uuid();
-        }
-    }
+    
 }
 export { Class };
 

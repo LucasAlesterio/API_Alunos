@@ -1,27 +1,22 @@
-import { Column, Entity, JoinColumn, ManyToMany, PrimaryColumn } from 'typeorm';
-import { v4 as uuid } from 'uuid';
+import { Column, Entity, ObjectID, ObjectIdColumn } from 'typeorm';
 import { Class } from './Classes';
+import { Grade } from './Grades';
 
-@Entity("students")
+@Entity()
 class Student{
-    @PrimaryColumn()
-    readonly id: string;
+
+    @ObjectIdColumn()
+    _id: ObjectID;
 
     @Column()
     name: string;
 
-    @Column("simple-array")
-    id_classes: string[]; 
-
-    @ManyToMany(()=>Class, Class => Class.id)
-    @JoinColumn({name:"id_classes"})
+    @Column(type => Class)
     classes: Class[];
 
-    constructor(){
-        if(!this.id){
-            this.id = uuid();
-        }
-    }
+    @Column(type => Grade)
+    grades: Grade[];
+
 }
 export { Student };
 

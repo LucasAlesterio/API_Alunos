@@ -1,34 +1,28 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from "typeorm";
-import { v4 as uuid } from 'uuid';
+import { Column, Entity, ObjectID, ObjectIdColumn } from "typeorm";
 import { Class } from "./Classes";
-import { Student } from "./Student";
 
-@Entity("classes")
+@Entity()
 class Grade{
-    @PrimaryColumn()
-    readonly id: string;
+
+    @ObjectIdColumn()
+    _id: ObjectID;
+
+    @Column(type => Class)
+    class: Class
+    
+    @Column()
+    p1: number;
 
     @Column()
-    value: number;
+    p2: number;
 
     @Column()
-    id_class: string;
+    p3: number;
 
     @Column()
-    id_student: string;
+    p4: number;
 
-    @OneToOne(()=>Class, Class=>Class.id)
-    @JoinColumn({name :"id_class"})
-    class: Class;
-
-    @OneToOne(()=> Student, Student=> Student.id)
-    @JoinColumn({name:"id_student"})
-    student: Student;
-
-    constructor(){
-        if(!this.id){
-            this.id = uuid();
-        }
-    }
 }
+
 export { Grade };
+
