@@ -1,69 +1,99 @@
 import { Request, Response } from "express";
-import { ObjectID as ID } from 'mongodb';
-import { getCustomRepository } from "typeorm";
+// import { ObjectID as ID } from 'mongodb';
+import { getCustomRepository , In, FindConditions} from "typeorm";
 import { Student } from "../models/Student";
 import { ClassesRepositories } from "../repositories/ClassesRepositories";
 import { StudentsRepositories } from "../repositories/StudentsRepository";
-
+import { Class } from "../models/Classes";
+import { GradeRepositories } from "../repositories/GradesRepositories";
+import { Grade } from "../models/Grades";
 class StudentController{
 
     async create(request: Request, response: Response){
-        const { name, classes } = request.body;
-        const studentRepository = getCustomRepository(StudentsRepositories);
-        const classRepository = getCustomRepository(ClassesRepositories);
-        let allClasses = [];
-        if(classes){
-            allClasses = classes.map(id=>new ID(id));
-        }
-        const _class = await classRepository.find({
-            where:{
-                _id:{$in:allClasses}
-            }
-        })
-        const student = new Student();
-        student.name = name;
-        if(classes && _class){
-            student.classes = _class;
-        }
-        await studentRepository.save(student);
-        return response.status(201).json(student);
-    }
+        try{
 
-    async update(request: Request, response: Response){
-        const { name,id, classes } = request.body;
-        const studentRepository = getCustomRepository(StudentsRepositories);
-        const classRepository = getCustomRepository(ClassesRepositories);
-        let allClasses = [];
-        if(classes){
-            allClasses = classes.map(id=>new ID(id));
-        }
-        const _class = await classRepository.find({
-            where:{
-                _id:{$in:allClasses}
+            const { name, classes } = request.body;
+            const studentRepository = getCustomRepository(StudentsRepositories);
+            const classRepository = getCustomRepository(ClassesRepositories);
+            let _class:Class[] = [];
+            const allClasses:string[] = classes;
+            const conditions = {
+                id: In(allClasses)
             }
-        })
-        if(name){
-            await studentRepository.update({_id:new ID(id)},{name: name});
+            if(classes){
+                _class = await classRepository.find(conditions);
+            }
+            const student = new Student();
+            student.name = name;
+            if(classes){
+                student.classes = _class;
+            }
+            await studentRepository.save(student);
+            return response.status(201).json(student);
+        }catch(error){
+            return response.status(400).json(error);
         }
-        if(classes){
-            await studentRepository.update({_id:new ID(id)},{classes: _class});
+    }
+        
+    async update(request: Request, response: Response){
+        try{
+
+            const { name,id, classes,grades } = request.body;
+            const studentRepository = getCustomRepository(StudentsRepositories);
+            const classRepository = getCustomRepository(ClassesRepositories);
+            const gradeRepository = getCustomRepository(GradeRepositories);
+            if(name){
+                await studentRepository.update(id,{name:name});
+            }
+            if(classes){
+                let _class:Class[] = [];
+                const allClasses:string[] = classes;
+                const conditions = {
+                    id: In(allClasses)
+                }
+                _class = await classRepository.find(conditions);
+                const thisStudent = await studentRepository.findOne(id);
+                studentRepository.merge(thisStudent,{classes: _class});
+                await studentRepository.save(thisStudent);
+            }
+            if(grades){
+                let grade:Grade[] = [];
+                const allClasses:string[] = grades;
+                const conditions = {
+                    id: In(allClasses)
+                }
+                grade = await gradeRepository.find(conditions);
+                const thisStudent = await studentRepository.findOne(id);
+                studentRepository.merge(thisStudent,{grades: grade});
+                await studentRepository.save(thisStudent);
+            }
+            return response.json({
+                message:"Modificado com sucesso!"
+            });
+        }catch(error){
+            return response.status(400).json(error);
         }
-        return response.json({
-            message:"Modificado com sucesso!"
-        });
     }
 
     async delete(request: Request, response: Response){
-        const { id } = request.query;
-        const studentRepository = getCustomRepository(StudentsRepositories);
-        await studentRepository.delete({_id:new ID(String(id))});
-        return response.json({message:"Removido com sucesso!"});
+        try{
+            const { id } = request.query;
+            const studentRepository = getCustomRepository(StudentsRepositories);
+            await studentRepository.delete({id:String(id)});
+            return response.json({message:"Removido com sucesso!"});
+        }catch(error){
+            return response.status(400).json(error);
+        }
     }
     
     async list(request: Request, response: Response){
-        const studentRepository = getCustomRepository(StudentsRepositories);
-        const Students = await studentRepository.find();
-        return response.json(Students);
+        try{
+            const studentRepository = getCustomRepository(StudentsRepositories);
+            const Students = await studentRepository.find({relations:["classes","grades"]});
+            return response.json(Students);
+        }catch(error){
+            return response.status(400).json(error);
+        }
     }
 }
 export { StudentController };

@@ -1,4 +1,4 @@
-import { EntityRepository, Repository } from "typeorm";
+import { EntityRepository, FindConditions, FindOneOptions, Repository } from "typeorm";
 import { Class } from "../models/Classes";
 
 @EntityRepository(Class)

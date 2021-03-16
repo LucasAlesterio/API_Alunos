@@ -1,21 +1,21 @@
-import { Column, Entity, ObjectID, ObjectIdColumn } from 'typeorm';
+import { Column, Entity, ObjectID, ObjectIdColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Class } from './Classes';
 import { Grade } from './Grades';
 
-@Entity()
+@Entity("students")
 class Student{
 
-    @ObjectIdColumn()
-    _id: ObjectID;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
+
+    @OneToMany(() => Grade, grade => grade.student,{onUpdate: 'CASCADE', onDelete: 'CASCADE'})
+    grades: Grade[];
+
+    @OneToMany(() => Class, _class => _class.student,{onUpdate: 'CASCADE', onDelete: 'CASCADE'})
+    classes: Class[];
 
     @Column()
     name: string;
-
-    @Column(type => Class)
-    classes: Class[];
-
-    @Column(type => Grade)
-    grades: Grade[];
 
 }
 export { Student };
