@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-// import { ObjectID as ID } from 'mongodb';
 import { getCustomRepository } from "typeorm";
 import { Class } from "../models/Classes";
 import { ClassesRepositories } from "../repositories/ClassesRepositories";

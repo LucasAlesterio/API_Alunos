@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
-// import { ObjectID as ID } from 'mongodb';
-import { getCustomRepository , In, FindConditions} from "typeorm";
+import { getCustomRepository, In } from "typeorm";
+import { Class } from "../models/Classes";
+import { Grade } from "../models/Grades";
 import { Student } from "../models/Student";
 import { ClassesRepositories } from "../repositories/ClassesRepositories";
-import { StudentsRepositories } from "../repositories/StudentsRepository";
-import { Class } from "../models/Classes";
 import { GradeRepositories } from "../repositories/GradesRepositories";
-import { Grade } from "../models/Grades";
+import { StudentsRepositories } from "../repositories/StudentsRepository";
 class StudentController{
 
     async create(request: Request, response: Response){
@@ -97,3 +96,4 @@ class StudentController{
     }
 }
 export { StudentController };
+

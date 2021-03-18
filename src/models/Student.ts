@@ -1,4 +1,4 @@
-import { Column, Entity, ObjectID, ObjectIdColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Class } from './Classes';
 import { Grade } from './Grades';
 

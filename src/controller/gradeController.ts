@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
-import { Class } from "../models/Classes";
 import { Grade } from "../models/Grades";
 import { Student } from "../models/Student";
 import { ClassesRepositories } from "../repositories/ClassesRepositories";
@@ -139,4 +138,4 @@ class GradeController{
         }
     }
 }
-export { GradeController }
+export { GradeController };

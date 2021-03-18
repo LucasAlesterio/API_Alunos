@@ -1,12 +1,17 @@
-FROM node:alpine
+FROM node:10
 
-WORKDIR /usr/app
+WORKDIR /usr/src/app
 
 COPY package.json ./
+
 RUN npm install
 
-COPY . .
+RUN npm install pm2 -g
 
-CMD ["npm","run","dev"]
+RUN npm run build
+
+COPY ./dist .
 
 EXPOSE 3333
+
+CMD ["pm2-runtime","server.js"]
