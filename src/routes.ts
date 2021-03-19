@@ -8,19 +8,19 @@ const classController = new ClassController();
 const gradeController = new GradeController();
 
 const router = Router();
-router.post('/student', studentController.create);
-router.put('/student', studentController.update);
-router.delete('/student', studentController.delete);
-router.get('/student', studentController.list);
+router.post('/students', studentController.create);
+router.put('/students', studentController.update);
+router.delete('/students', studentController.delete);
+router.get('/students', studentController.list);
 
-router.post('/class', classController.create);
-router.put('/class', classController.update);
-router.delete('/class', classController.delete);
-router.get('/class', classController.list);
+router.post('/classes', classController.create);
+router.put('/classes', classController.update);
+router.delete('/classes', classController.delete);
+router.get('/classes', classController.list);
 
-router.post('/grade',gradeController.create);
-router.put('/grade',gradeController.update);
-router.delete('/grade',gradeController.delete);
-router.get('/grade',gradeController.list);
+router.post('/grades',gradeController.create);
+router.put('/grades',gradeController.update);
+router.delete('/grades',gradeController.delete);
+router.get('/grades',gradeController.list);
 
 export { router };

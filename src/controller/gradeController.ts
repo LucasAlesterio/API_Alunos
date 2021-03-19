@@ -120,10 +120,8 @@ class GradeController{
                         total += grade.p3 && grade.p3;
                         total += grade.p4 && grade.p4;
                         const status = {class: grade.class.name,total,status:(total > 60 ? "Aprovado":"Reprovado")}
-                        console.log(status);
                         return status;
                     });
-                    console.log(statusStudent);
                     return response.json({Student: studentData.name,statusStudent});
                 }else{
                     return response.json({message: "Não há notas cadastradas!"});

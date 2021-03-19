@@ -88,7 +88,7 @@ class StudentController{
     async list(request: Request, response: Response){
         try{
             const studentRepository = getCustomRepository(StudentsRepositories);
-            const Students = await studentRepository.find({relations:["classes","grades"]});
+            const Students = await (await studentRepository.find({relations:["classes","grades"]}));
             return response.json(Students);
         }catch(error){
             return response.status(400).json(error);

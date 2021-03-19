@@ -1,17 +1,17 @@
-FROM node:10
+FROM node:10-alpine
 
-WORKDIR /usr/src/app
+RUN apk update
 
-COPY package.json ./
+WORKDIR /app
 
+COPY package*.json ./
+COPY tsconfig.json ./
+COPY ormconfig.js ./
+COPY src /app
+
+RUN ls -a
 RUN npm install
-
-RUN npm install pm2 -g
 
 RUN npm run build
 
-COPY ./dist .
-
 EXPOSE 3333
-
-CMD ["pm2-runtime","server.js"]

@@ -1,15 +1,5 @@
 version: "3"
 services: 
-  api:
-    restart: always
-    build: .
-    environment:
-      - PORT=3333
-    command: npm start
-    ports:
-      - "3333:3333"
-    links: 
-      - db
   db:
     image: postgres
     ports: 
@@ -18,4 +8,12 @@ services:
       - POSTGRES_PASSWORD=000000
       - POSTGRES_USER=postgres
       - POSTGRES_DB=asa_tb1
+  api:
+    restart: on-failure
+    build: .
+    ports:
+      - "3333:3333"
+    links:
+      - db
+    command: npm start
 

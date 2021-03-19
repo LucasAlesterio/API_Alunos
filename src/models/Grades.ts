@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Class } from "./Classes";
 import { Student } from "./Student";
 
@@ -10,8 +10,8 @@ class Grade{
     @ManyToOne(() => Student, student => student.grades,{onUpdate: 'CASCADE', onDelete: 'CASCADE'})
     student: Student;
 
-    @OneToOne(() => Class,{onUpdate: 'CASCADE', onDelete: 'CASCADE'})
-    @JoinColumn()
+    @ManyToOne(() => Class,{onUpdate: 'CASCADE', onDelete: 'CASCADE'})
+    @JoinTable()
     class: Class;
 
     @Column({ default: null, nullable: true })
