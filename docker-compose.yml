@@ -9,11 +9,13 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_DB=asa_tb1
   api:
+    depends_on: 
+      - "db"
     restart: on-failure
     build: .
     ports:
       - "3333:3333"
     links:
-      - db
+      - "db"
     command: npm start
 
